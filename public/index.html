@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>De Lucas — Barbearia</title>
+<style>
+:root{--bg:#0c0c0d;--card:#161618;--line:#2a2620;--gold:#b8923a;--gold2:#8a6d28;--gold-soft:#d1b06a;--txt:#ece6d8;--mut:#8f887a;--red:#b4553f;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--txt);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+/* ===== IMAGEM DE FUNDO (opcional) =====
+   Para usar, remova os comentários da linha abaixo e troque pelo endereço/arquivo da sua imagem:
+   background-image:linear-gradient(rgba(12,12,13,.82),rgba(12,12,13,.92)),url('COLOQUE-SUA-IMAGEM-AQUI.jpg');
+   background-size:cover;background-position:center;background-attachment:fixed;
+   ======================================= */
+}
+#app{max-width:520px;margin:0 auto;padding:20px 16px 40px}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:400;margin:0}
+.logo{text-align:center;padding:28px 0 8px}
+.logo small{display:block;letter-spacing:.35em;color:var(--gold2);font-size:11px;text-transform:uppercase}
+.logo h1{font-size:44px;color:var(--gold);letter-spacing:.04em;margin:4px 0}
+.logo .bar{width:70px;height:2px;margin:10px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.sub{text-align:center;color:var(--mut);font-size:14px;margin:14px 0 26px}
+.btn{display:block;width:100%;padding:16px;border-radius:12px;border:1px solid var(--gold2);background:var(--card);color:var(--gold-soft);font:inherit;font-size:17px;letter-spacing:.03em;cursor:pointer;margin-bottom:12px;text-align:center}
+.btn.main{background:linear-gradient(180deg,var(--gold),var(--gold2));color:#14110a;font-weight:600;border-color:var(--gold)}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.4}
+.info{margin-top:26px;border-top:1px solid var(--line);padding-top:14px;color:var(--mut);font-size:13px;text-align:center;line-height:1.8}
+.top{display:flex;align-items:center;gap:10px;margin:6px 0 16px}
+.back{background:none;border:1px solid var(--line);color:var(--gold-soft);border-radius:10px;padding:8px 12px;font:inherit;cursor:pointer}
+.top h2{font-size:22px;color:var(--gold)}
+.lbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold2);margin:18px 0 8px}
+.strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.day{flex:0 0 58px;text-align:center;padding:8px 0;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit;cursor:pointer}
+.day b{display:block;font-size:19px;font-weight:600}
+.day span{font-size:11px;color:var(--mut);text-transform:uppercase}
+.day.sel{border-color:var(--gold);background:#231d10}
+.day.sel b,.day.sel span{color:var(--gold-soft)}
+.day.off{opacity:.35}
+input[type=text],input[type=tel],input[type=password]{width:100%;padding:14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit;outline:none}
+input:focus{border-color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{padding:12px 0;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit;font-size:15px;cursor:pointer}
+.slot.sel{background:var(--gold);color:#14110a;border-color:var(--gold);font-weight:600}
+.slot:disabled{color:#4a463e;background:#101011;text-decoration:line-through;cursor:not-allowed}
+.note{color:var(--mut);font-size:13px;margin:8px 0}
+.row{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);margin-bottom:8px}
+.row .t{font-weight:600;color:var(--gold-soft);min-width:56px}
+.row .n{flex:1;padding:0 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row.free .n{color:var(--mut)}
+.row.busy{border-left:3px solid var(--gold);cursor:pointer}
+.row.lunch{justify-content:center;color:var(--mut);font-style:italic;background:transparent;border-style:dashed}
+.det{margin:-4px 0 8px;padding:12px 14px;border:1px solid var(--line);border-top:none;border-radius:0 0 10px 10px;background:#121214;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.det a,.det button{flex:1;text-align:center;padding:10px;border-radius:8px;border:1px solid var(--gold2);background:transparent;color:var(--gold-soft);font:inherit;font-size:14px;text-decoration:none;cursor:pointer}
+.det .del{border-color:var(--red);color:#e0907c}
+.tag{font-size:12px;color:var(--mut)}
+.sum{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin:6px 0 12px}
+.ok{text-align:center;padding:30px 10px}
+.ok .ck{width:64px;height:64px;border-radius:50%;border:2px solid var(--gold);color:var(--gold);font-size:32px;line-height:60px;margin:0 auto 14px}
+.ok p{color:var(--mut)}.ok strong{color:var(--gold-soft)}
+.lnk{display:block;width:100%;text-align:center;color:var(--mut);font:inherit;font-size:14px;background:none;border:none;text-decoration:underline;cursor:pointer;padding:10px}
+.code{font-family:Georgia,serif;font-size:40px;letter-spacing:.3em;color:var(--gold);border:1px dashed var(--gold2);border-radius:12px;padding:12px 0 12px .3em;margin:4px 0 8px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#231d10;border:1px solid var(--gold);color:var(--gold-soft);padding:12px 18px;border-radius:10px;font-size:14px;max-width:90%;z-index:9;display:none}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s), pad=n=>String(n).padStart(2,'0');
+const DOW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'], MON=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const dkey=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const hm=m=>pad(Math.floor(m/60))+':'+pad(m%60);
+
+let S={view:'home',date:dkey(new Date()),slot:null,name:'',phone:'',open:null,del:null,last:null,code:'',cq:{phone:'',code:'',res:null}};
+let store={};
+let barberKey='';try{barberKey=sessionStorage.getItem('delucas_key')||''}catch(e){}
+const dig=s=>String(s).replace(/\D/g,'');
+
+/* ---------- Regras de horário ---------- */
+function slotsFor(k){            // retorna lista de minutos; [] = folga
+  const dw=parse(k).getDay(); if(dw===1) return [];
+  const end=(dw===0?13:20)*60, out=[];
+  for(let m=480;m<end;m+=30){ if(m>=720&&m<780) continue; out.push(m); }
+  return out;
+}
+const isPast=(k,m)=>{const n=new Date(),t=dkey(n);return k<t||(k===t&&m<=n.getHours()*60+n.getMinutes())};
+const id=(k,m)=>k+'_'+hm(m).replace(':','');
+function nextDay(from,skipMon){const d=parse(from);const a=[];for(let i=0;i<30;i++){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()+i);if(skipMon&&x.getDay()===1)continue;a.push(dkey(x))}return a}
+
+/* ---------- API (servidor Netlify) ---------- */
+async function api(path,opt={}){
+  const h={'Content-Type':'application/json'};
+  if(opt.auth&&barberKey)h['x-barber-key']=barberKey;
+  const r=await fetch('/api/'+path,{method:opt.body?'POST':'GET',headers:h,body:opt.body?JSON.stringify(opt.body):undefined});
+  let j={};try{j=await r.json()}catch(e){}
+  if(!r.ok)throw Object.assign(new Error(j.error||'erro'),{status:r.status,data:j});
+  return j;
+}
+async function loadDay(){
+  const d=S.date;
+  try{
+    if(S.view==='agenda'&&barberKey){const j=await api('agenda?date='+d,{auth:true});store={};j.items.forEach(r=>store[id(r.date,r.min)]=r)}
+    else if(S.view==='book'){const j=await api('slots?date='+d);store={};j.taken.forEach(m=>store[id(d,m)]={date:d,min:m})}
+  }catch(e){
+    if(e.status===401){barberKey='';try{sessionStorage.removeItem('delucas_key')}catch(x){}render();return}
+    toast('Sem conexão com o servidor');
+  }
+  refresh();
+}
+async function put(rec){
+  try{await api('book',{body:{...rec,code:S.code}});return true}
+  catch(e){if(e.status===409)return false;throw e}
+}
+function initDb(){setInterval(()=>{if(!document.hidden&&(S.view==='book'||S.view==='agenda'))loadDay()},20000)}
+
+/* ---------- UI ---------- */
+const logo='<div class="logo"><small>Barbearia</small><h1>De Lucas</h1><div class="bar"></div></div>';
+function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2800)}
+function strip(skipMon){
+  return '<div class="strip">'+nextDay(dkey(new Date()),skipMon).map(k=>{const d=parse(k);return `<button class="day ${k===S.date?'sel':''} ${d.getDay()===1?'off':''}" data-a="day" data-k="${k}"><span>${DOW[d.getDay()]}</span><b>${d.getDate()}</b><span>${MON[d.getMonth()]}</span></button>`}).join('')+'</div>';
+}
+function dayLabel(k){const d=parse(k);return DOW[d.getDay()]+', '+d.getDate()+' de '+MON[d.getMonth()]}
+function hoursNote(k){const dw=parse(k).getDay();return dw===0?'Domingo: atendimento até 13:00':'Seg a Sáb: 08:00–20:00 · almoço 12:00–13:00'}
+
+function render(){
+  const a=$('#app');
+  if(S.view==='agenda'&&!barberKey){
+    a.innerHTML=`<div class="top"><button class="back" data-a="go" data-v="home">←</button><h2>Agenda</h2></div><p class="note">Área do barbeiro. Digite a senha.</p><input type="password" id="bk" placeholder="Senha" autocomplete="current-password"><button class="btn main" data-a="login" style="margin-top:14px">Entrar</button>`;
+    return;
+  }
+  if(S.view==='home'){
+    a.innerHTML=logo+'<p class="sub">Escolha uma opção</p><button class="btn main" data-a="go" data-v="book">Marcar Horário</button><button class="btn" data-a="go" data-v="agenda">Ver Agenda</button><button class="lnk" data-a="go" data-v="cancel">Cancelar meu agendamento</button><div class="info">Terça a Sábado · 08:00 às 20:00<br>Domingo · 08:00 às 13:00<br>Almoço 12:00–13:00 · Folga na segunda</div>';
+  }else if(S.view==='book'){
+    if(parse(S.date).getDay()===1)S.date=nextDay(S.date,true)[0];
+    if(!S.code)S.code=String(Math.floor(1000+Math.random()*9000));
+    a.innerHTML=`<div class="top"><button class="back" data-a="go" data-v="home">←</button><h2>Marcar horário</h2></div>
+    <div class="lbl">Seus dados</div>
+    <input type="text" id="nm" placeholder="Seu nome" maxlength="40" autocomplete="name" value="${esc(S.name)}">
+    <div style="height:8px"></div>
+    <input type="tel" id="ph" placeholder="WhatsApp (81) 9 9999-9999" inputmode="numeric" autocomplete="tel" value="${esc(S.phone)}">
+    <div class="lbl">Código para cancelar (4 números)</div>
+    <input type="tel" id="cd" inputmode="numeric" maxlength="4" placeholder="Ex.: 1234" value="${esc(S.code)}">
+    <p class="note">Já sugerimos um, mas você pode trocar. Guarde bem: só com ele você cancela o horário.</p>
+    <div class="lbl">Dia</div>${strip(true)}
+    <div class="lbl">Horário</div><div id="slots"></div><p class="note" id="hn"></p>
+    <button class="btn main" id="ok" data-a="save" style="margin-top:14px">Confirmar agendamento</button>`;
+  }else if(S.view==='agenda'){
+    a.innerHTML=`<div class="top"><button class="back" data-a="go" data-v="home">←</button><h2>Agenda</h2></div>${strip(false)}<div style="height:14px"></div><div id="list"></div><button class="btn" data-a="bookday" style="margin-top:10px">+ Agendar neste dia</button>`;
+  }else if(S.view==='cancel'){
+    const q=S.cq;
+    a.innerHTML=`<div class="top"><button class="back" data-a="go" data-v="home">←</button><h2>Cancelar horário</h2></div><p class="note">Informe o WhatsApp usado no agendamento e o seu código de cancelamento.</p><input type="tel" id="cph" placeholder="WhatsApp" inputmode="numeric" value="${esc(q.phone)}"><div style="height:8px"></div><input type="tel" id="ccd" placeholder="Código (4 números)" inputmode="numeric" maxlength="4" value="${esc(q.code)}"><button class="btn main" data-a="cfind" style="margin-top:14px">Buscar meu agendamento</button><div id="cres"></div>`;
+  }else if(S.view==='done'){
+    const r=S.last;
+    a.innerHTML=logo+`<div class="ok"><div class="ck">✓</div><h2>Agendado!</h2><p><strong>${esc(r.name)}</strong>, seu horário é<br><strong>${dayLabel(r.date)} às ${hm(r.min)}</strong></p><p>Te esperamos na De Lucas.</p><div class="lbl">Seu código para cancelar</div><div class="code">${esc(r.code)}</div><p class="note">Anote este código. Ele é necessário para cancelar o horário.</p></div><button class="btn main" data-a="go" data-v="home">Voltar ao início</button><button class="btn" data-a="go" data-v="agenda">Ver Agenda</button>`;
+  }
+  refresh();
+  if(S.view==='book'||S.view==='agenda')loadDay();
+  const sel=$('.day.sel');if(sel)sel.scrollIntoView({inline:'center',block:'nearest'});
+}
+function refresh(){
+  if(S.view==='cancel'&&$('#cres')){
+    const r=S.cq.res;
+    $('#cres').innerHTML=r===null?'':!r.length?'<p class="note" style="margin-top:14px">Nenhum agendamento encontrado com esses dados.</p>':'<div class="lbl">Seus horários</div>'+r.map(x=>{const i=x.id;return `<div class="row busy" style="cursor:default"><span class="t" style="min-width:0">${esc(dayLabel(x.date))} · ${hm(x.min)}</span><button class="back" style="color:#e0907c;border-color:var(--red)" data-a="cdo" data-i="${i}">Cancelar</button></div>`}).join('');
+  }
+  if(S.view==='book'&&$('#slots')){
+    const list=slotsFor(S.date);
+    $('#slots').innerHTML='<div class="grid">'+list.map(m=>{const off=store[id(S.date,m)]||isPast(S.date,m);return `<button class="slot ${S.slot===m?'sel':''}" data-a="slot" data-m="${m}" ${off?'disabled':''}>${hm(m)}</button>`}).join('')+'</div>';
+    $('#hn').textContent=hoursNote(S.date);
+  }
+  if(S.view==='agenda'&&$('#list')){
+    const dw=parse(S.date).getDay();
+    if(dw===1){$('#list').innerHTML='<div class="row lunch">Folga — segunda-feira</div>';return}
+    const list=slotsFor(S.date);let n=0,h='';
+    list.forEach(m=>{
+      if(m===780)h+='<div class="row lunch">Almoço 12:00 – 13:00</div>';
+      const i=id(S.date,m),r=store[i];
+      if(r){n++;h+=`<div class="row busy" data-a="open" data-i="${i}"><span class="t">${hm(m)}</span><span class="n">${esc(r.name)}</span><span class="tag">${S.open===i?'▲':'▼'}</span></div>`;
+        if(S.open===i){const w=String(r.phone).replace(/\D/g,'');h+=`<div class="det"><span class="tag" style="flex:1 0 100%">${esc(r.phone)}</span><a href="https://wa.me/${w.startsWith('55')?w:'55'+w}" target="_blank" rel="noopener">WhatsApp</a><button class="del" data-a="${S.del===i?'dok':'del'}" data-i="${i}">${S.del===i?'Confirmar cancelamento?':'Cancelar'}</button></div>`}
+      }else h+=`<div class="row free"><span class="t">${hm(m)}</span><span class="n">${isPast(S.date,m)?'—':'Livre'}</span></div>`;
+    });
+    if(dw===0&&list.length)h+='<div class="row lunch">Domingo: atendimento até 13:00</div>';
+    $('#list').innerHTML=`<div class="sum"><span>${dayLabel(S.date)}</span><span>${n} agendado${n===1?'':'s'}</span></div>`+h;
+  }
+}
+
+/* ---------- Eventos ---------- */
+document.addEventListener('input',e=>{
+  if(e.target.id==='nm')S.name=e.target.value;
+  if(e.target.id==='cd'){S.code=dig(e.target.value).slice(0,4);e.target.value=S.code}
+  if(e.target.id==='cph')S.cq.phone=e.target.value;
+  if(e.target.id==='ccd'){S.cq.code=dig(e.target.value).slice(0,4);e.target.value=S.cq.code}
+  if(e.target.id==='ph'){let d=e.target.value.replace(/\D/g,'').slice(0,11);let f=d;
+    if(d.length>2)f='('+d.slice(0,2)+') '+d.slice(2,d.length>10?7:6)+(d.length>(d.length>10?7:6)?'-'+d.slice(d.length>10?7:6):'');
+    e.target.value=f;S.phone=f}
+});
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+  if(a==='go'){S.view=b.dataset.v;S.slot=null;S.open=null;S.del=null;if(S.view==='book'&&S.date<dkey(new Date()))S.date=dkey(new Date());render()}
+  else if(a==='day'){S.date=b.dataset.k;S.slot=null;S.open=null;S.del=null;render()}
+  else if(a==='slot'){S.slot=+b.dataset.m;refresh()}
+  else if(a==='open'){S.open=S.open===b.dataset.i?null:b.dataset.i;S.del=null;refresh()}
+  else if(a==='del'){S.del=S.del===b.dataset.i?null:b.dataset.i;refresh()}
+  else if(a==='login'){const k=($('#bk')||{}).value||'';if(!k)return toast('Digite a senha');barberKey=k;
+    try{await api('agenda?date='+S.date,{auth:true});try{sessionStorage.setItem('delucas_key',k)}catch(x){}render()}
+    catch(x){barberKey='';toast(x.status===429?'Muitas tentativas. Tente mais tarde.':x.status===401?'Senha incorreta':'Erro ao entrar')}}
+  else if(a==='dok'){const i=b.dataset.i;
+    try{await api('cancel',{auth:true,body:{id:i}});S.del=null;S.open=null;toast('Agendamento cancelado');loadDay()}catch(x){toast((x.data&&x.data.error)||'Não foi possível cancelar')}}
+  else if(a==='cfind'){const c=S.cq.code;if(dig(S.cq.phone).length<10||c.length<4)return toast('Preencha WhatsApp e código');
+    try{const j=await api('find',{body:{phone:S.cq.phone,code:c}});S.cq.res=j.items;refresh()}catch(x){toast((x.data&&x.data.error)||'Erro na busca')}}
+  else if(a==='cdo'){const i=b.dataset.i;
+    try{await api('cancel',{body:{id:i,code:S.cq.code}});S.cq.res=S.cq.res.filter(x=>x.id!==i);toast('Agendamento cancelado')}catch(x){toast((x.data&&x.data.error)||'Não foi possível cancelar')}refresh()}
+  else if(a==='bookday'){S.view='book';S.slot=null;render()}
+  else if(a==='save'){
+    const name=S.name.trim(),dg=S.phone.replace(/\D/g,'');
+    if(name.length<2)return toast('Digite seu nome');
+    if(dg.length<10)return toast('Digite um WhatsApp válido');
+    if(S.code.length<4)return toast('O código precisa ter 4 números');
+    if(S.slot==null)return toast('Escolha um horário');
+    b.disabled=true;
+    try{
+      const rec={name,phone:S.phone,date:S.date,min:S.slot};
+      if(await put(rec)){S.last={...rec,code:S.code};S.view='done';S.name='';S.phone='';S.slot=null;S.code='';render()}
+      else{toast('Esse horário acabou de ser ocupado. Escolha outro.');S.slot=null;loadDay()}
+    }catch(x){toast((x.data&&x.data.error)||'Erro ao salvar. Tente novamente.')}
+    b.disabled=false;
+  }
+});
+render();initDb();
+</script>
+</body>
+</html>
